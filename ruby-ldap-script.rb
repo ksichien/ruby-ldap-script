@@ -5,6 +5,7 @@ require 'net/ldap'
 @lname = ARGV[1].downcase
 SERVERHOSTNAME = "ldap.example.com"
 SERVERLDAP = "dc=example,dc=com"
+SERVERADMIN = "cn=admin"
 SERVERPASSWORD = "password"
 EMAIL = "example.com"
 GROUPOU = "ou=Groups"
@@ -14,11 +15,11 @@ USERDN = "uid=#{@fname}.#{@lname},#{USEROU},#{SERVERLDAP}"
 def genldap
   ldap = Net::LDAP.new :host => SERVERHOSTNAME,
        :port => 636,
-       :encryption => "simple_tls",
+       :encryption => :simple_tls,
        :base => SERVERLDAP,
        :auth => {
              :method => :simple,
-             :username => "cn=admin,#{SERVERLDAP}",
+             :username => "#{SERVERADMIN},#{SERVERLDAP}",
              :password => SERVERPASSWORD
   }
 end
@@ -57,9 +58,7 @@ def create
   attr = {
     :objectclass => ["inetOrgPerson"],
     :uid => "#{@fname}.#{@lname}",
-    :cn => "#{@fname} #{@lname}",
-    :displayName => "#{@fname.capitalize} #{@lname.capitalize}",
-    :givenName => "#{@fname.capitalize}",
+    :cn => "#{@fname.capitalize} #{@lname.capitalize}",
     :sn => "#{@lname.capitalize}",
     :mail => "#{@fname}.#{@lname}@#{EMAIL}"
   }
