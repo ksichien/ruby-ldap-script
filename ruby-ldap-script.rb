@@ -32,22 +32,26 @@ end
 
 def add
   ldap = genldap
-  grouparray = File.open(ARGV[3], 'r') { |groups| groups.readlines }
-  grouparray.each do |g|
-    path = ""
-    ldapgroups = g.split(",")
-    if ldapgroups[1].nil?
-      path = ldapgroups[0].chomp
-    else
-      path << ldapgroups[0]
-      ldapunits = ldapgroups.drop(1)
-      ldapunits.each do |l|
-        path << ",ou=#{l.chomp}"
+  if ARGV[3].nil?
+    puts "No groups file was provided, exiting."
+  else
+    grouparray = File.open(ARGV[3], 'r') { |groups| groups.readlines }
+    grouparray.each do |g|
+      path = ""
+      ldapgroups = g.split(",")
+      if ldapgroups[1].nil?
+        path = ldapgroups[0].chomp
+      else
+        path << ldapgroups[0]
+        ldapunits = ldapgroups.drop(1)
+        ldapunits.each do |l|
+          path << ",ou=#{l.chomp}"
+        end
       end
+      attrdn = "cn=#{path},#{GROUPOU},#{SERVERLDAP}"
+      ldap.add_attribute attrdn, :member, USERDN)
+      puts "Operation add #{@fname}.#{@lname} to #{attrdn} result: #{ldap.get_operation_result.message}"
     end
-    attrdn = "cn=#{path},#{GROUPOU},#{SERVERLDAP}"
-    ldap.add_attribute attrdn, :member, USERDN)
-    puts "Operation add #{@fname}.#{@lname} to #{attrdn} result: #{ldap.get_operation_result.message}"
   end
 end
 

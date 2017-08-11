@@ -13,9 +13,9 @@ The arguments are as follows:
 - the user's first name
 - the user's last name
 - the desired OpenLDAP operation to be performed, the options are:
-  - "a" for adding a user to the groups specified in the groups.txt file
-  - "c" for creating a user
+  - "a" for adding a user to one or more groups
+  - "c" for creating a user and (optional) adding them to one or more groups
   - "s" for searching all groups the user is a member of
-- (optional) the location of the groups.txt file for the "c" command
+- (optional) the location of the groups.txt file for the "a" and "c" commands
 
 When the script is executed, it will perform the requested operation on the OpenLDAP server and print the result to the terminal.
