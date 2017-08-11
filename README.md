@@ -9,7 +9,7 @@ It can be executed from a terminal with:
 $ ruby ruby-ldap-script john smith c groups.txt
 ```
 
-The arguments are as follows:
+The available arguments are listed below:
 - the user's first name
 - the user's last name
 - the desired OpenLDAP operation to be performed, the options are:
