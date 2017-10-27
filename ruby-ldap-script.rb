@@ -3,13 +3,13 @@ require 'net/ldap'
 
 @fname = ARGV[0].downcase
 @lname = ARGV[1].downcase
-SERVERHOSTNAME = "ldap.example.com"
-SERVERLDAP = "dc=example,dc=com"
-SERVERADMIN = "cn=admin"
-SERVERPASSWORD = "password"
-EMAIL = "example.com"
-GROUPOU = "ou=Groups"
-USEROU = "ou=Users"
+SERVERHOSTNAME = 'ldap.vandelayindustries.com'
+SERVERLDAP = 'dc=internal,dc=vandelayindustries,dc=com'
+SERVERADMIN = 'cn=admin'
+SERVERPASSWORD = 'password'
+EMAIL = 'vandelayindustries.com'
+GROUPOU = 'ou=Groups'
+USEROU = 'ou=Users'
 USERDN = "uid=#{@fname}.#{@lname},#{USEROU},#{SERVERLDAP}"
 
 def genldap
@@ -33,12 +33,12 @@ end
 def add
   ldap = genldap
   if ARGV[3].nil?
-    puts "No groups file was provided, exiting."
+    puts 'No groups file was provided, exiting.'
   else
     grouparray = File.open(ARGV[3], 'r') { |groups| groups.readlines }
     grouparray.each do |g|
-      path = ""
-      ldapgroups = g.split(",")
+      path = ''
+      ldapgroups = g.split(',')
       if ldapgroups[1].nil?
         path = ldapgroups[0].chomp
       else
@@ -60,7 +60,7 @@ def create
   pwd = genpwd
 
   attr = {
-    :objectclass => ["inetOrgPerson"],
+    :objectclass => ['inetOrgPerson'],
     :uid => "#{@fname}.#{@lname}",
     :cn => "#{@fname.capitalize} #{@lname.capitalize}",
     :sn => "#{@lname.capitalize}",
@@ -92,12 +92,12 @@ def search
 end
 
 case ARGV[2]
-  when "a"
+  when 'a'
     add
-  when "c"
+  when 'c'
     create
-  when "s"
+  when 's'
     search
   else
-    puts "Bad or insufficient number of arguments provided, exiting."
+    puts 'Bad or insufficient number of arguments provided, exiting.'
 end
