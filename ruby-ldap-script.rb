@@ -60,7 +60,6 @@ end
 def create
   ldap = genldap
   pwd = genpwd
-
   attr = {
     objectclass: ['inetOrgPerson'],
     uid: "#{@fname}.#{@lname}",
@@ -68,15 +67,12 @@ def create
     sn: @lname.capitalize,
     mail: "#{@fname}.#{@lname}@#{EMAIL}"
   }
-
   ldap.add(dn: USERDN, attributes: attr)
-  puts "Operation create #{@fname}.#{@lname} result: #{ldap.get_operation_result.message}"
-
+  puts "Operation create #{@fname}.#{@lname} result: " \
+        "#{ldap.get_operation_result.message}"
   ldap.add_attribute USERDN, :userPassword, "{CRYPT}#{pwd[1]}"
   puts "Operation set password result: #{ldap.get_operation_result.message}"
-
   add unless ARGV[3].nil?
-
   puts "Username: #{@fname}.#{@lname}"
   puts "Password: #{pwd[0]}"
   puts "Hashed Password: #{pwd[1]}"
