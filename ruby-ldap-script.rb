@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 require 'net/ldap'
 
+if ARGV[0].nil? || ARGV[1].nil?
+  puts 'Insufficient amount of arguments provided,
+        please consult the README.md file for further instructions.'
+  exit
+end
+
 @fname = ARGV[0].downcase
 @lname = ARGV[1].downcase
 
