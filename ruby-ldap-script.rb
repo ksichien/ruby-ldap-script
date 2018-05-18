@@ -34,10 +34,10 @@ end
 def add
   ldap = genldap
   if ARGV[3].nil?
-    puts 'No groups file was provided, exiting.'
+    result = 'No groups file was provided, exiting.'
   else
     grouparray = File.readlines(ARGV[3])
-    grouparray.each do |g|
+    result_array = grouparray.map do |g|
       path = ''
       ldapgroups = g.split(',')
       if ldapgroups[1].nil?
@@ -51,10 +51,12 @@ def add
       end
       attrdn = "cn=#{path},#{GROUPOU},#{SERVERLDAP}"
       ldap.add_attribute attrdn, :member, USERDN
-      puts "Operation add #{@fname}.#{@lname} to #{attrdn} result:
-            #{ldap.get_operation_result.message}"
+      "Operation add #{@fname}.#{@lname} to #{attrdn} result:
+            #{ldap.get_operation_result.message}\n"
     end
+    result = result_array.join('')
   end
+  puts result
 end
 
 def create
